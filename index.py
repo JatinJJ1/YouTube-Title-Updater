@@ -5,11 +5,11 @@ import os
 SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 def get_youtube_service():
-    flow = InstalledAppFlow.from_client_secrets_file(
-        "client_secret.json", SCOPES
+    token_info = json.loads(os.environ["TOKEN_JSON"])
+
+    credentials = Credentials.from_authorized_user_info(
+        token_info, SCOPES
     )
-    # credentials = flow.run_local_server(port=0) #GitHub Actions cannot open a browser for OAuth
-    credentials = flow.run_console(port=0)
     return build("youtube", "v3", credentials=credentials)
 
 def update_title(video_id):
@@ -52,3 +52,4 @@ def update_title(video_id):
 if __name__ == "__main__":
     VIDEO_ID = "ayEPAbXWxEA"
     update_title(VIDEO_ID)
+
